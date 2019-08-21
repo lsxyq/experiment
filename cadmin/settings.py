@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import datetime
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -31,7 +32,6 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'simpleui',
     'import_export',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'daterange_filter',
@@ -178,11 +178,11 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'  #静态文件路径
-STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static') #执行静态文件收集时的目录，需要配置nginx
+STATIC_URL = '/static/'  # 静态文件路径映射别名
+STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')  # 执行静态文件收集时的目录，需要配置nginx
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'common_static')  #将static映射到各个app下的static和STATIC_ROOT
+    os.path.join(BASE_DIR, 'static')  # 项目静态文件夹名称
 ]
 
-#Celery
+# Celery
 from .celeryconfig import *
