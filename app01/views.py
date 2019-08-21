@@ -1,9 +1,10 @@
 # Create your views here.
 
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 
-from app01.tasks import test_multiply
+from app01.tasks import App01Task,multiply
 
 
 # Create your views here.
@@ -21,16 +22,21 @@ class LoginView(View):
                 return self.http_method_not_allowed
 
     def get(self, request):
-        return render(request, 'a.html', )
+        return render(request, 'app01/index.html', )
 
     def post(self, request):
         pass
 
 
 def index(request):
-    x = request.GET.get('x')
-    y = request.GET.get('y')
-    test_multiply.delay(int(x), int(y))  # 加上delay才是异步执行，不然就是同步，而且如果将其赋予一个值，也是同步了
-    if request.method == 'POST':
-        pass
-    return render(request, 'index.html', {'x': 10})
+    print('request accept')
+    App01Task().delay()
+    print('request finish')
+    return JsonResponse({'result': 'ok'})
+
+
+def multy(request):
+    print('multiply accept')
+    multiply.delay()
+    print('multiply finish')
+    return JsonResponse({'result': 'ok'})

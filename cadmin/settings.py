@@ -178,23 +178,11 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/'  #静态文件路径
+STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static') #执行静态文件收集时的目录，需要配置nginx
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'common_static')  #将static映射到各个app下的static和STATIC_ROOT
+]
 
-import djcelery
-
-djcelery.setup_loader()
-BROKER_URL = 'redis://:root@127.0.0.1:6379/0'  # 中间人，存储队列信息
-CELERY_RESULT_BACKEND = 'redis://:root@localhost:6379/1'  # 将结果返回到redis的1库
-from datetime import timedelta
-
-CELERY_TIMEZONE = 'Asia/Shanghai'
-# CELERY_ALWAYS_EAGER = True   # 如果开启，Celery便以eager模式运行, 则task便不需要加delay运行，记住没有加这个一定要再delay才是异步运行！！
-CELERY_RESULT_SERIALIZER = 'json'  # 设置返回格式为json
-
-CELERYBEAT_SCHEDULE = {
-    'add-every-3-seconds': {
-        'task': 'app01.tasks.test_celery',  # 运行定时任务test_celery, 要写路径中的tasks.py，必须为tasks.py文件
-        'schedule': timedelta(seconds=3600),  # 设置循环时间
-        'args': (19, 16)  # 给定时任务的参数
-    },
-}
+#Celery
+from .celeryconfig import *
