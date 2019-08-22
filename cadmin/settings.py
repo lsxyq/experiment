@@ -107,8 +107,11 @@ REST_FRAMEWORK = {
         'barrage_rate': '3/minute'
     }
 }
+#session cookie key
 SESSION_COOKIE_NAME = 'sessionid'
+
 SESSION_ENGINE = 'redis_sessions.session'
+
 SESSION_REDIS = {
     'host': 'localhost',
     'port': 6379,
@@ -118,7 +121,7 @@ SESSION_REDIS = {
     'socket_timeout': 1
 }
 
-# # JWT配置
+# JWT配置
 # JWT_AUTH = {
 #     # token过期时间
 #     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
@@ -145,13 +148,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#################
-# SIMPLEUI配置
-# SIMPLEUI_HOME_PAGE = 'https://www.ehafo.com/'
+# SIMPLE UI
+# SIMPLE UI_HOME_PAGE = 'https://www.ehafo.com/'
 SIMPLEUI_HOME_TITLE = '易哈佛考试'
+
 SIMPLEUI_LOGO = 'https://imglive.ehafo.com/upload/storage/2018/11/VmFUgTK2D6yhRddItKrYHyYq2o7eTyyoPUOpZ7jP.png'
+
 SIMPLEUI_ANALYSIS = False
-# SIMPLEUI_HOME_ICON = 'fab fa-apple'
+
 SIMPLEUI_ICON = {
     '审核管理': 'fas fa fa-th-list',
     '教案管理': 'fas fa fa-th-list',
@@ -160,8 +164,6 @@ SIMPLEUI_ICON = {
     '课程推送': 'fas fa fa-th-list',
     '上下文历史': 'fa fa-plane',
 }
-#################
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -179,10 +181,12 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'  # 静态文件路径映射别名
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')  # 执行静态文件收集时的目录，需要配置nginx
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')  # 项目静态文件夹名称
 ]
 
 # Celery
-from .celeryconfig import *
+from celerytask.config import *

@@ -1,1 +1,1 @@
-python manage.py celery flower --address=127.0.0.1 --port=5555
+python manage.py celery flower --address=0.0.0.0 --port=5555
