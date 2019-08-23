@@ -9,16 +9,16 @@ from kombu import Queue
 djcelery.setup_loader()
 
 # 中间人，使用rabbitmq存储队列信息
-BROKER_URL = 'amqp://127.0.0.1:5672'
+# BROKER_URL = 'amqp://127.0.0.1:5672'
 
 # 将结果返回rabbitmq
-RESULT_BACKEND = 'amqp://127.0.0.1:5672'
+# RESULT_BACKEND = 'amqp://127.0.0.1:5672'
 
 # 中间人，存储队列信息
-# BROKER_URL = 'redis://:root@127.0.0.1:6379/0'
+BROKER_URL = 'redis://:root@127.0.0.1:6379/0'
 
 # 将结果返回到redis的1库
-# CELERY_RESULT_BACKEND = 'redis://:root@localhost:6379/1'
+RESULT_BACKEND = 'redis://:root@localhost:6379/1'
 
 # 如果开启，Celery便以eager模式运行, 则task便不需要加delay运行，记住没有加这个一定要再delay才是异步运行！！
 # CELERY_ALWAYS_EAGER = True
