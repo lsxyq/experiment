@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'daterange_filter',
     'djcelery',
+    'haystack',
     'django_admin_listfilter_dropdown',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -108,7 +109,7 @@ REST_FRAMEWORK = {
         'barrage_rate': '3/minute'
     }
 }
-#session cookie key
+# session cookie key
 SESSION_COOKIE_NAME = 'sessionid'
 
 SESSION_ENGINE = 'redis_sessions.session'
@@ -191,3 +192,35 @@ STATICFILES_DIRS = [
 
 # Celery
 from celerytask.config import *
+
+# Solr
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+#         'URL': 'http://127.0.0.1:8983/solr'
+#         # ...or for multicore...
+#         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+#     },
+# }
+
+# Whoosh
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'app01.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+# Elasticsearch
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+#         'URL': 'http://127.0.0.1:9200/',
+#         'INDEX_NAME': 'haystack',
+#     },
+# }
+
+#设置分页显示的数据量
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 4
+#当数据库改变是，自动更新索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

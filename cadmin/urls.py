@@ -25,6 +25,7 @@ from app01 import views
 schema_view = get_schema_view(title='微课Api', renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer])
 urlpatterns = [
     path('', views.index, name='task'),
+    path('search/', include('haystack.urls')),
     path('m/', views.multy, name='multy'),
     path('admin/', admin.site.urls),
     path('docs/', schema_view, name='swagger_docs'),
