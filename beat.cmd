@@ -1,1 +1,1 @@
-python manage.py celery beat -A celerytask -l info -s "beat_schedule/" --pidfile=
+python manage.py celery beat -A celerytask -l info -s --pidfile=

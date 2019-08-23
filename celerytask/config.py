@@ -66,36 +66,27 @@ CELERY_QUEUES = (  # 定义任务队列
 )
 
 CELERY_ROUTES = {
-    'app01.tasks.add':
-        {
-            'queue': 'beat_queue',
-            'routing_key': "beat.add"
-        },
     'app01-task':
         {
             'queue': 'worker_queue',
             'routing_key': "worker.task"
         },
-    'app01.tasks.multiply':
+    'celerytask.tasks.multiply':
         {
             'queue': 'default',
             'routing_key': "default.multiply"
         },
-    'app01.tasks.test':
-        {
-            'queue': 'worker_queue',
-            'routing_key': "worker.test"
-        },
+
 }
 
 CELERYBEAT_SCHEDULE = {
     'add': {
-        'task': 'app01.tasks.add',  # 运行定时任务test_celery, 要写路径中的tasks.py，必须为tasks.py文件
+        'task': 'celerytask.tasks.add',  # 运行定时任务test_celery, 要写路径中的tasks.py，必须为tasks.py文件
         'schedule': timedelta(seconds=3),  # 设置循环时间
         'args': (19, 16)  # 给定时任务的参数
     },
     'test': {
-        'task': 'app01.tasks.test',  # 运行定时任务test_celery, 要写路径中的tasks.py，必须为tasks.py文件
+        'task': 'celerytask.tasks.test',  # 运行定时任务test_celery, 要写路径中的tasks.py，必须为tasks.py文件
         'schedule': timedelta(seconds=3),  # 设置循环时间
         'args': ('test task',)  # 给定时任务的参数
     },
