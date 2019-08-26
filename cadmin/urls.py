@@ -16,19 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
-from rest_framework.schemas import get_schema_view
+from rest_framework.documentation import include_docs_urls
 from rest_framework_jwt.views import obtain_jwt_token
-from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPIRenderer
 
-from app01 import views
+from apps.app01 import views
 
-schema_view = get_schema_view(title='微课Api', renderer_classes=[OpenAPIRenderer, SwaggerUIRenderer])
 urlpatterns = [
     path('', views.index, name='task'),
     path('search/', include('haystack.urls')),
     path('m/', views.multy, name='multy'),
     path('admin/', admin.site.urls),
-    path('docs/', schema_view, name='swagger_docs'),
-    path('api/sliders/', include('app01.restful.urls', namespace='customer')),
+    path('docs/', include_docs_urls(title='微课')),
+    path('api/sliders/', include('apps.app01.restful.urls', namespace='customer')),
     path('api-token-auth/', obtain_jwt_token),
 ]

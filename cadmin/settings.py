@@ -107,7 +107,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'ip_address': '10/minute',
         'barrage_rate': '3/minute'
-    }
+    },
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema'
 }
 # session cookie key
 SESSION_COOKIE_NAME = 'sessionid'
@@ -220,7 +221,7 @@ HAYSTACK_CONNECTIONS = {
 #     },
 # }
 
-#设置分页显示的数据量
+# 设置分页显示的数据量
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 4
-#当数据库改变是，自动更新索引
+# 当数据库改变是，自动更新索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
