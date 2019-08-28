@@ -14,6 +14,8 @@ import os
 import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from pathlib import Path
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 # Quick-start development settings - unsuitable for production
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'daterange_filter',
     'djcelery',
     'haystack',
+    # 'rest_framework_swagger',
     'django_admin_listfilter_dropdown',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     'app01.apps.App01Config',
     'celerytask.apps.CelerytaskConfig',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +103,8 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
@@ -182,6 +188,7 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 STATIC_URL = '/static/'  # 静态文件路径映射别名
 
@@ -190,6 +197,34 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')  # 执行静态文件收�
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')  # 项目静态文件夹名称
 ]
+
+SWAGGER_SETTINGS = {
+    # 基础样式
+    'USE_SESSION_AUTH': True,
+    'SECURITY_DEFINITIONS': {
+        "basic": {
+            'type': 'basic'
+        }
+        # 'api_key': {
+        #     'type': 'apiKey',
+        #     'in': 'header',
+        #     'name': 'authorization'
+        # }
+    },
+    'LOGIN_URL': '/admin/login',
+    'LOGOUT_URL': '/admin/logout',
+
+    'SHOW_REQUEST_HEADERS': True,
+    # 接口文档中方法列表以首字母升序排列
+    'APIS_SORTER': 'alpha',
+    # 如果支持json提交, 则接口文档中包含json输入框
+    'JSON_EDITOR': True,
+    # 方法列表字母排序
+    'OPERATIONS_SORTER': 'alpha',
+    'VALIDATOR_URL': None,
+    'OPERATIONS_SORTER ': 'method',
+    'DOC_EXPANSION': 'none',
+}
 
 # Celery
 from celerytask.config import *
@@ -225,3 +260,75 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 4
 # 当数据库改变是，自动更新索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'gearman_handler': {
+            'level': 'INFO',
+            'class': "logging.handlers.WatchedFileHandler",
+            'filename': os.path.join(BASE_DIR, 'logs/gearman.log'),
+            'formatter': 'verbose'
+
+        },
+        'verify_handler': {
+            'level': 'DEBUG',
+            'class': "logging.handlers.WatchedFileHandler",
+            'filename': os.path.join(BASE_DIR, 'logs/verify.log'),
+            'formatter': 'verbose'
+        },
+        'weke_api': {
+            'level': 'INFO',
+            'class': "logging.handlers.WatchedFileHandler",
+            'filename': os.path.join(BASE_DIR, 'logs/weke_api.log'),
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'verify': {
+            'handlers': ['console', 'verify_handler'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'gearman': {
+            'handlers': ['console', 'gearman_handler'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+    }
+}
+
+for k, v in LOGGING.get('handlers').items():
+    filename = v.get('filename')
+    if filename:
+        path = Path(filename).parent
+        if not path.exists():
+            os.makedirs(path.as_posix())
