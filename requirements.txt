@@ -35,7 +35,7 @@ odfpy==1.4.0
 openpyxl==2.6.2
 PyJWT==1.7.1
 pytz==2019.2
-PyYAML==5.1.2
+PyYAML==5.4
 redis==2.10.6
 requests==2.22.0
 simplejson==3.16.0
