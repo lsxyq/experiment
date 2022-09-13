@@ -21,7 +21,7 @@ djangorestframework==3.10.2
 djangorestframework-jwt==1.11.0
 et-xmlfile==1.0.1
 flow==0.0.1
-flower==0.9.3
+flower==1.2.0
 idna==2.8
 importlib-metadata==0.19
 itypes==1.1.0
